@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>RSVP Elsa & Gad</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px 16px 35px;
+  background: #a5a1c8;
+  color: #000000;
+  font-family: Arial, sans-serif;
+}
+
+form {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+.question {
+  margin-bottom: 26px;
+}
+
+label,
+.question-titre {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 9px;
+  color: #000000;
+}
+
+input[type="text"],
+select,
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 45px;
+  padding: 12px;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #000000;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+.invite {
+  margin-bottom: 22px;
+}
+
+.invite-titre {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.champ {
+  margin-bottom: 12px;
+}
+
+.choix {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 13px 0;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.choix input {
+  width: 19px;
+  height: 19px;
+  accent-color: #000000;
+  flex-shrink: 0;
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.bouton-envoyer {
+  width: 100%;
+  padding: 16px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.bouton-envoyer:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.information {
+  margin-top: 12px;
+  font-size: 12px;
+  text-align: center;
+  color: #222222;
+}
+
+</style>
+</head>
+
+<body>
+
+<form id="formulaireRSVP">
+
+  <!-- NOMBRE D'INVITÉS -->
+
+  <div class="question">
+
+    <label for="nombre">
+      Nombre d'invités *
+    </label>
+
+    <select id="nombre" required>
+      <option value="">
+        Sélectionnez...
+      </option>
+
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+
+    </select>
+
+  </div>
+
+
+  <!-- NOMS ET PRÉNOMS -->
+
+  <div id="listeInvites"></div>
+
+
+  <!-- ÉVÉNEMENTS -->
+
+  <div class="question">
+
+    <div class="question-titre">
+      À quels événements assistez-vous ? *
+    </div>
+
+    <label class="choix">
+      <input
+        type="checkbox"
+        name="evenement"
+        value="Mairie">
+      Mairie
+    </label>
+
+    <label class="choix">
+      <input
+        type="checkbox"
+        name="evenement"
+        value="Henné">
+      Henné
+    </label>
+
+    <label class="choix">
+      <input
+        type="checkbox"
+        name="evenement"
+        value="Houppa">
+      Houppa
+    </label>
+
+    <label class="choix">
+      <input
+        type="checkbox"
+        name="evenement"
+        value="Shabbat Hatan">
+      Shabbat Hatan
+    </label>
+
+  </div>
+
+
+  <!-- MESSAGE -->
+
+  <div class="question">
+
+    <label for="message">
+      Message pour les mariés (facultatif)
+    </label>
+
+    <textarea
+      id="message"
+      maxlength="3000"
+      placeholder="Votre message..."></textarea>
+
+  </div>
+
+
+  <!-- ENVOI -->
+
+  <button
+    class="bouton-envoyer"
+    id="boutonEnvoyer"
+    type="submit"
+    disabled>
+    Envoyer ma réponse
+  </button>
+
+  <p class="information">
+    L'envoi sera activé lorsque
+    la connexion sera finalisée.
+  </p>
+
+</form>
+
+
+<script>
+
+/* AFFICHER LES CHAMPS DES INVITÉS */
+
+const nombreElement =
+  document.getElementById("nombre");
+
+const listeInvites =
+  document.getElementById("listeInvites");
+
+nombreElement.addEventListener(
+  "change",
+  afficherInvites
+);
+
+function afficherInvites() {
+
+  const nombre = Number(nombreElement.value);
+
+  listeInvites.innerHTML = "";
+
+  for (let i = 1; i <= nombre; i++) {
+
+    const bloc = document.createElement("div");
+
+    bloc.className = "invite";
+
+    const titre = document.createElement("div");
+    titre.className = "invite-titre";
+    titre.textContent = "Invité " + i;
+
+    const champPrenom =
+      document.createElement("div");
+    champPrenom.className = "champ";
+
+    const labelPrenom =
+      document.createElement("label");
+    labelPrenom.textContent = "Prénom *";
+    labelPrenom.htmlFor = "prenom" + i;
+
+    const inputPrenom =
+      document.createElement("input");
+    inputPrenom.type = "text";
+    inputPrenom.id = "prenom" + i;
+    inputPrenom.name = "prenom" + i;
+    inputPrenom.required = true;
+    inputPrenom.maxLength = 100;
+
+    champPrenom.appendChild(labelPrenom);
+    champPrenom.appendChild(inputPrenom);
+
+    const champNom =
+      document.createElement("div");
+    champNom.className = "champ";
+
+    const labelNom =
+      document.createElement("label");
+    labelNom.textContent = "Nom *";
+    labelNom.htmlFor = "nom" + i;
+
+    const inputNom =
+      document.createElement("input");
+    inputNom.type = "text";
+    inputNom.id = "nom" + i;
+    inputNom.name = "nom" + i;
+    inputNom.required = true;
+    inputNom.maxLength = 100;
+
+    champNom.appendChild(labelNom);
+    champNom.appendChild(inputNom);
+
+    bloc.appendChild(titre);
+    bloc.appendChild(champPrenom);
+    bloc.appendChild(champNom);
+
+    listeInvites.appendChild(bloc);
+
+  }
+
+}
+
+
+/* PRÉPARATION DES DONNÉES */
+
+const formulaire =
+  document.getElementById("formulaireRSVP");
+
+formulaire.addEventListener(
+  "submit",
+  function(event) {
+
+    event.preventDefault();
+
+    const nombre = Number(nombreElement.value);
+
+    const invites = [];
+
+    for (let i = 1; i <= nombre; i++) {
+
+      invites.push({
+        prenom: document
+          .getElementById("prenom" + i)
+          .value.trim(),
+
+        nom: document
+          .getElementById("nom" + i)
+          .value.trim()
+      });
+
+    }
+
+    const evenements = Array.from(
+      document.querySelectorAll(
+        'input[name="evenement"]:checked'
+      )
+    ).map(function(caseCochee) {
+      return caseCochee.value;
+    });
+
+    if (evenements.length === 0) {
+      alert(
+        "Sélectionnez au moins un événement."
+      );
+      return;
+    }
+
+    const reponse = {
+      nombre: nombre,
+      invites: invites,
+      evenements: evenements,
+      message: document
+        .getElementById("message")
+        .value.trim()
+    };
+
+    // L'envoi sera connecté à Google Sheets
+    // lorsque nous finaliserons le site.
+
+    console.log(reponse);
+
+  }
+);
+
+</script>
+
+</body>
+</html>

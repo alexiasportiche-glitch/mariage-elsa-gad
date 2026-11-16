@@ -1,0 +1,770 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Elsa & Gad — Notre mariage</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      font-family: 'Anton', Impact, sans-serif;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* IMAGES CANVA */
+
+    .page {
+      position: relative;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+      background: #ffffff;
+    }
+
+    .page img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* ENVELOPPE ET INVITATION */
+
+    #accueil {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 2;
+      overflow: hidden;
+      isolation: isolate;
+      background: #ffffff;
+    }
+
+    #invitationFond {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+    }
+
+    .moitie {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      background-image: url("enveloppe.png");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      transition: transform 1.6s cubic-bezier(.65, 0, .2, 1);
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .moitie.gauche {
+      clip-path: inset(0 50% 0 0);
+    }
+
+    .moitie.droite {
+      clip-path: inset(0 0 0 50%);
+    }
+
+    #accueil.ouvert .moitie.gauche {
+      transform: translateX(-100%);
+    }
+
+    #accueil.ouvert .moitie.droite {
+      transform: translateX(100%);
+    }
+
+    #sceau {
+      position: absolute;
+      z-index: 10;
+      left: 50%;
+      top: 55%;
+      transform: translate(-50%, -50%);
+      width: 30%;
+      aspect-ratio: 1;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+    }
+
+    #accueil.ouvert #sceau {
+      display: none;
+    }
+
+    #boutonProgrammeZone {
+      position: absolute;
+      z-index: 5;
+      left: 31%;
+      width: 38%;
+      bottom: 1%;
+      height: 11%;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #accueil.ouvert #boutonProgrammeZone {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #decouvrir {
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    #sceau:focus-visible,
+    #decouvrir:focus-visible {
+      outline: 3px solid #173d72;
+      outline-offset: 3px;
+    }
+
+    /* PROGRAMME */
+
+    #programme {
+      display: none;
+      width: 100%;
+      background: #ffffff;
+    }
+
+    #programme.visible {
+      display: block;
+    }
+
+    /* RSVP */
+
+    #pageRSVP {
+      position: relative;
+      width: 100%;
+      background: #65c7da;
+      overflow: hidden;
+    }
+
+    .rsvp-entete {
+      position: relative;
+      width: 100%;
+      line-height: 0;
+    }
+
+    .rsvp-entete img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .rsvp-formulaire-zone {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      margin-top: -145%;
+      padding: 0 7% 65px;
+      background: transparent;
+      color: #ffffff;
+      line-height: 1.5;
+    }
+
+    #formulaireRSVP {
+      width: 100%;
+      max-width: 430px;
+      margin: 0 auto;
+      font-family: 'Anton', Impact, sans-serif;
+    }
+
+    .question {
+      margin-bottom: 27px;
+    }
+
+    #formulaireRSVP label:not(.choix),
+    .question-titre {
+      display: block;
+      margin-bottom: 9px;
+      color: #ffffff;
+      font-family: 'Anton', Impact, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: .3px;
+    }
+
+    #formulaireRSVP input[type="text"],
+    #formulaireRSVP select,
+    #formulaireRSVP textarea {
+      display: block;
+      width: 100%;
+      min-height: 47px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,.85);
+      border-radius: 5px;
+      background: rgba(255,255,255,.12);
+      color: #ffffff;
+      font-family: 'Anton', Impact, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: .3px;
+    }
+
+    #formulaireRSVP input::placeholder,
+    #formulaireRSVP textarea::placeholder {
+      color: rgba(255,255,255,.8);
+    }
+
+    #formulaireRSVP select option {
+      color: #173d72;
+      background: #ffffff;
+    }
+
+    #formulaireRSVP input:focus,
+    #formulaireRSVP select:focus,
+    #formulaireRSVP textarea:focus {
+      outline: 2px solid #f4d49a;
+      outline-offset: 2px;
+    }
+
+    .invite {
+      margin: 0 0 25px;
+      padding-top: 8px;
+    }
+
+    .invite-titre {
+      margin-bottom: 13px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid rgba(255,255,255,.5);
+      color: #f8e2b9;
+      font-family: 'Anton', Impact, sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+    }
+
+    .champ {
+      margin-bottom: 14px;
+    }
+
+    .choix {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin: 14px 0;
+      color: #ffffff;
+      font-family: 'Anton', Impact, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      cursor: pointer;
+    }
+
+    .choix input {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      accent-color: #173d72;
+    }
+
+    #formulaireRSVP textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    /* BOUTON BLANC ET DORÉ */
+
+    #boutonEnvoyer {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      border: 1px solid #ffffff;
+      border-radius: 4px;
+      background: #ffffff;
+      color: #d6bb83;
+      font-family: 'Anton', Impact, sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: .5px;
+    }
+
+    #boutonEnvoyer:disabled {
+      opacity: 1;
+      background: #ffffff;
+      color: #d6bb83;
+      border: 1px solid #ffffff;
+      cursor: not-allowed;
+    }
+
+    .information {
+      margin-top: 12px;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* MUSIQUE */
+
+    #boutonMusique {
+      position: fixed;
+      z-index: 30;
+      top: calc(14px + env(safe-area-inset-top));
+      right: 14px;
+      width: 43px;
+      height: 43px;
+      border: 1px solid #dbe7ef;
+      border-radius: 50%;
+      background: rgba(255,255,255,.93);
+      color: #234e7b;
+      font-size: 19px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    }
+
+    #boutonMusique[hidden] {
+      display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .moitie {
+        transition-duration: 250ms;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ENVELOPPE ET INVITATION -->
+
+  <section id="accueil">
+
+    <img
+      id="invitationFond"
+      src="invitation.png"
+      alt="Invitation au mariage d'Elsa et Gad"
+    >
+
+    <div class="moitie gauche" aria-hidden="true"></div>
+    <div class="moitie droite" aria-hidden="true"></div>
+
+    <button
+      id="sceau"
+      type="button"
+      aria-label="Ouvrir l'enveloppe"
+    ></button>
+
+    <div id="boutonProgrammeZone">
+      <button
+        id="decouvrir"
+        type="button"
+        aria-label="Découvrez le programme"
+      ></button>
+    </div>
+
+  </section>
+
+  <!-- PROGRAMME -->
+
+  <main id="programme">
+
+    <section class="page" id="annonce">
+      <img
+        src="annonce programme.png"
+        alt="Annonce du programme"
+      >
+    </section>
+
+    <section class="page">
+      <img src="Mairie.png" alt="Mairie">
+    </section>
+
+    <section class="page">
+      <img src="Hénné.png" alt="Henné">
+    </section>
+
+    <section class="page">
+      <img src="Houppa.png" alt="Houppa">
+    </section>
+
+    <section class="page">
+      <img src="Shabbat.png" alt="Shabbat Hatan">
+    </section>
+
+    <!-- RSVP -->
+
+    <section id="pageRSVP">
+
+      <div class="rsvp-entete">
+        <img
+          src="rsvp.png"
+          alt="Un chapitre avec vous"
+        >
+      </div>
+
+      <div class="rsvp-formulaire-zone">
+
+        <form id="formulaireRSVP">
+
+          <div class="question">
+            <label for="nombre">
+              Nombre d'invités *
+            </label>
+
+            <select id="nombre" required>
+              <option value="">Sélectionnez...</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+
+          <div id="listeInvites"></div>
+
+          <div class="question">
+
+            <div class="question-titre">
+              À quels événements assistez-vous ? *
+            </div>
+
+            <label class="choix">
+              <input
+                type="checkbox"
+                name="evenement"
+                value="Mairie"
+              >
+              Mairie
+            </label>
+
+            <label class="choix">
+              <input
+                type="checkbox"
+                name="evenement"
+                value="Henné"
+              >
+              Henné
+            </label>
+
+            <label class="choix">
+              <input
+                type="checkbox"
+                name="evenement"
+                value="Houppa"
+              >
+              Houppa
+            </label>
+
+            <label class="choix">
+              <input
+                type="checkbox"
+                name="evenement"
+                value="Shabbat Hatan"
+              >
+              Shabbat Hatan
+            </label>
+
+          </div>
+
+          <div class="question">
+            <label for="message">
+              Message pour les mariés (facultatif)
+            </label>
+
+            <textarea
+              id="message"
+              maxlength="3000"
+              placeholder="Votre message..."
+            ></textarea>
+          </div>
+
+          <button
+            id="boutonEnvoyer"
+            type="submit"
+          >
+            Envoyer ma réponse
+          </button>
+
+          <p
+            class="information"
+            id="statutEnvoi"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- MUSIQUE -->
+
+  <audio
+    id="musique"
+    src="musique.mp3"
+    loop
+    preload="none"
+  ></audio>
+
+  <button
+    id="boutonMusique"
+    type="button"
+    aria-label="Activer ou couper la musique"
+    hidden
+  >🔊</button>
+
+  <script>
+    /* CONFIGURATION GOOGLE SHEETS */
+
+    const URL_GOOGLE_SHEETS =
+      "https://script.google.com/macros/s/AKfycbx-hSr275GeMkAXF9uBbAFT6K0fJ8TMvbq3NqN5A50Tq6KLQDlqZi-RAD1KNoK0EmNnNw/exec";
+
+    const CLE_CONNEXION = "elsaetgad2705début";
+
+    /* ENVELOPPE ET PROGRAMME */
+
+    const accueil = document.getElementById("accueil");
+    const sceau = document.getElementById("sceau");
+    const decouvrir = document.getElementById("decouvrir");
+    const programme = document.getElementById("programme");
+
+    const musique = document.getElementById("musique");
+    const boutonMusique = document.getElementById("boutonMusique");
+
+    let enveloppeOuverte = false;
+
+    musique.volume = 0.4;
+
+    sceau.addEventListener("click", () => {
+      if (enveloppeOuverte) return;
+
+      enveloppeOuverte = true;
+      accueil.classList.add("ouvert");
+
+      boutonMusique.hidden = false;
+
+      musique.play().catch(() => {
+        boutonMusique.textContent = "🔇";
+      });
+    });
+
+    decouvrir.addEventListener("click", () => {
+      programme.classList.add("visible");
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.getElementById("annonce")
+            .scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+        });
+      });
+    });
+
+    boutonMusique.addEventListener("click", () => {
+      if (musique.paused) {
+        musique.play().catch(() => {});
+      } else {
+        musique.pause();
+      }
+    });
+
+    musique.addEventListener("play", () => {
+      boutonMusique.textContent = "🔊";
+    });
+
+    musique.addEventListener("pause", () => {
+      boutonMusique.textContent = "🔇";
+    });
+
+    /* QUESTIONNAIRE RSVP */
+
+    const nombreElement = document.getElementById("nombre");
+    const listeInvites = document.getElementById("listeInvites");
+    const formulaire = document.getElementById("formulaireRSVP");
+    const boutonEnvoyer = document.getElementById("boutonEnvoyer");
+    const statutEnvoi = document.getElementById("statutEnvoi");
+
+    nombreElement.addEventListener("change", afficherInvites);
+
+    function afficherInvites() {
+      const nombre = Number(nombreElement.value);
+
+      listeInvites.replaceChildren();
+
+      for (let i = 1; i <= nombre; i++) {
+        const bloc = document.createElement("div");
+        bloc.className = "invite";
+
+        const titre = document.createElement("div");
+        titre.className = "invite-titre";
+        titre.textContent = "Invité " + i;
+
+        const champPrenom = document.createElement("div");
+        champPrenom.className = "champ";
+
+        const labelPrenom = document.createElement("label");
+        labelPrenom.textContent = "Prénom *";
+        labelPrenom.htmlFor = "prenom" + i;
+
+        const inputPrenom = document.createElement("input");
+        inputPrenom.type = "text";
+        inputPrenom.id = "prenom" + i;
+        inputPrenom.name = "prenom" + i;
+        inputPrenom.required = true;
+        inputPrenom.maxLength = 100;
+
+        champPrenom.append(labelPrenom, inputPrenom);
+
+        const champNom = document.createElement("div");
+        champNom.className = "champ";
+
+        const labelNom = document.createElement("label");
+        labelNom.textContent = "Nom *";
+        labelNom.htmlFor = "nom" + i;
+
+        const inputNom = document.createElement("input");
+        inputNom.type = "text";
+        inputNom.id = "nom" + i;
+        inputNom.name = "nom" + i;
+        inputNom.required = true;
+        inputNom.maxLength = 100;
+
+        champNom.append(labelNom, inputNom);
+
+        bloc.append(titre, champPrenom, champNom);
+        listeInvites.appendChild(bloc);
+      }
+    }
+
+    /* ENVOI À GOOGLE SHEETS */
+
+    formulaire.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (boutonEnvoyer.disabled) return;
+
+      const nombre = Number(nombreElement.value);
+      const invites = [];
+
+      for (let i = 1; i <= nombre; i++) {
+        const prenom = document
+          .getElementById("prenom" + i)
+          .value.trim();
+
+        const nom = document
+          .getElementById("nom" + i)
+          .value.trim();
+
+        if (!prenom || !nom) {
+          statutEnvoi.textContent =
+            "Merci de renseigner le prénom et le nom de chaque invité.";
+          return;
+        }
+
+        invites.push({ prenom, nom });
+      }
+
+      const evenements = Array.from(
+        document.querySelectorAll(
+          'input[name="evenement"]:checked'
+        )
+      ).map(caseCochee => caseCochee.value);
+
+      if (evenements.length === 0) {
+        statutEnvoi.textContent =
+          "Merci de sélectionner au moins un événement.";
+        return;
+      }
+
+      const reponse = {
+        cle: CLE_CONNEXION,
+        nombre: nombre,
+        invites: invites,
+        evenements: evenements,
+        message: document
+          .getElementById("message")
+          .value.trim()
+      };
+
+      boutonEnvoyer.disabled = true;
+      boutonEnvoyer.textContent = "Envoi en cours...";
+      statutEnvoi.textContent = "Transmission de votre réponse...";
+
+      try {
+        /*
+          Apps Script ne permet pas ici de lire
+          directement sa réponse depuis Netlify.
+          no-cors transmet la demande, mais ne
+          confirme pas son enregistrement.
+        */
+
+        await fetch(URL_GOOGLE_SHEETS, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(reponse)
+        });
+
+        statutEnvoi.textContent =
+          "Votre réponse a été transmise. " +
+          "L'enregistrement sera vérifié dans notre tableau.";
+
+        boutonEnvoyer.textContent = "Réponse transmise";
+
+      } catch (erreur) {
+        console.error(erreur);
+
+        statutEnvoi.textContent =
+          "La transmission a échoué. " +
+          "Vérifiez votre connexion et réessayez.";
+
+        boutonEnvoyer.disabled = false;
+        boutonEnvoyer.textContent = "Envoyer ma réponse";
+      }
+    });
+  </script>
+
+</body>
+</html>
